@@ -11,17 +11,37 @@ Duka la mavazi la Hilaly Outfit: kiolesura cha Kiswahili, mandhari nyeupe na dha
 
 ## Kuendesha
 
+API iko hewani: **https://hilalyoutfit.onrender.com** (Render), imeunganishwa na MongoDB Atlas na Cloudinary.
+
 ```bash
 npm install
-npm --prefix server install
-npm run dev:all        # frontend (http://localhost:5173) + API (http://localhost:5000) kwa pamoja
+npm run dev            # frontend ya hapa (http://localhost:5173) + API iliyo hewani — huhitaji kuwasha server
 ```
 
-Au kila moja peke yake: `npm run dev` (frontend) na `npm run dev:server` (API). Frontend huongea na `/api` tu; Vite huipeleka kwenye port 5000 (angalia `vite.config.ts`).
+Kufanya kazi kwenye backend yenyewe:
+
+```bash
+npm --prefix server install
+npm run dev:all        # frontend + API ya kompyuta hii (http://localhost:5000)
+```
+
+Frontend huongea na `/api` tu, na Vite huipeleka kwa server husika (`vite.config.ts`):
+
+| Amri | API inayotumika | Faili |
+|---|---|---|
+| `npm run dev` | Render (hewani) | `.env.development` |
+| `npm run dev:all` | `server/` ya kompyuta hii | `.env.localapi` |
+| `npm run build` | Render (hewani), moja kwa moja | `.env.production` |
+
+Faili hizi tatu zina anwani za wazi tu, hakuna siri. **Zingatia:** njia zote mbili za dev huandika kwenye data halisi — `server/.env` ya hapa nayo inaelekeza kwenye Atlas ileile.
+
+**Kuweka frontend hewani:** server ya Render hukubali maombi ya browser kutoka kwenye anwani zilizoorodheshwa kwenye `CLIENT_ORIGIN` tu. Ukishaipa frontend anwani yake (mfano `https://hilalyoutfit.com`), iongeze kwenye `CLIENT_ORIGIN` kwenye Environment ya Render (tenganisha kwa koma), vinginevyo browser itazuia maombi yote (CORS). Mwenyeji wa frontend aelekeze njia zote kwenye `index.html` (SPA rewrite) ili `/bidhaa/...` na `/admin` zifunguke zikipakiwa upya.
+
+Render ya bure hulala isipotumika; ombi la kwanza baada ya hapo linaweza kuchukua hadi dakika moja.
 
 ## Usanidi — `server/.env`
 
-Mfano wenye maelezo ya kila kigezo upo `server/.env.example`. Usiweke `.env` kwenye git.
+Mfano wenye maelezo ya kila kigezo upo `server/.env.example`. Usiweke `server/.env` kwenye git. Kwenye Render, vigezo hivi hivi huwekwa kwenye Environment ya huduma.
 
 - **`MONGODB_URI`** — weka ya MongoDB Atlas au ya kompyuta yako. Ikiwa tupu wakati wa development, server huwasha MongoDB ya majaribio yenyewe na kuhifadhi data ndani ya `server/.data/` (mara ya kwanza hupakua takribani MB 780). **Si kwa matumizi halisi** — production hukataa kuwaka bila `MONGODB_URI`.
 - **`ADMIN_PHONE` / `ADMIN_PASSWORD`** — akaunti ya msimamizi huundwa server inapowaka mara ya kwanza. Kubadilisha `ADMIN_PASSWORD` baadaye hakubadilishi password ya msimamizi aliyekwisha undwa.

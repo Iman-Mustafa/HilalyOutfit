@@ -2,6 +2,10 @@ import type { PaymentProvider, PaymentStatus, Product, Transaction, User } from 
 
 const TOKEN_KEY = 'hilaly_token';
 
+// Empty in development: requests go to /api and Vite proxies them (see vite.config.ts).
+// Production builds get the live server's address from .env.production.
+const API_BASE = `${(import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '')}/api`;
+
 /** Error returned by the API: `message` is ready to show to the user (Swahili) */
 export class ApiError extends Error {
   status: number;
@@ -53,7 +57,7 @@ async function request<T>(path: string, options: { method?: string; body?: unkno
 
   let response: Response;
   try {
-    response = await fetch(`/api${path}`, {
+    response = await fetch(`${API_BASE}${path}`, {
       method: options.method || 'GET',
       headers,
       body: options.formData ?? (options.body !== undefined ? JSON.stringify(options.body) : undefined)
