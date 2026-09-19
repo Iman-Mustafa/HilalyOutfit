@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCheckout } from '../../context/CheckoutContext';
-import { PAYMENT_PROVIDERS } from '../../data/paymentProviders';
+import { getProviderInfo } from '../../data/paymentProviders';
 
 export const PhonePushSimulator: React.FC = () => {
   const {
@@ -16,7 +16,7 @@ export const PhonePushSimulator: React.FC = () => {
 
   if (!isUssdPromptActive || !currentTransaction) return null;
 
-  const providerInfo = PAYMENT_PROVIDERS.find(p => p.id === paymentProvider) || PAYMENT_PROVIDERS[0];
+  const providerInfo = getProviderInfo(paymentProvider);
   const formatTZS = (val: number) => 'TSh ' + val.toLocaleString('en-US');
 
   const handleApprove = () => {

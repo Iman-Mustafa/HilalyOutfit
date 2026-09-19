@@ -1,9 +1,12 @@
 import type { PaymentProvider } from '../types';
 
-// Keep in sync with server/src/utils/phone.js — the server is the source of truth
-const NETWORK_PREFIXES: Record<PaymentProvider, string[]> = {
+type NamedNetwork = Exclude<PaymentProvider, 'other'>;
+
+// Keep in sync with server/src/utils/phone.js — the server is the source of truth.
+// A best-effort label only: numbers can be ported, so a prefix does not prove the network.
+const NETWORK_PREFIXES: Record<NamedNetwork, string[]> = {
   tigopesa: ['065', '067', '071', '077'],
-  mpesa: ['074', '075', '076'],
+  mpesa: ['074', '075', '076', '079'],
   airtel: ['068', '069', '078'],
   halopesa: ['062', '061']
 };
@@ -20,12 +23,12 @@ export const normalizePhone = (input: string): string | null => {
   return /^0[67]\d{8}$/.test(digits) ? digits : null;
 };
 
-export const detectProvider = (input: string): PaymentProvider | null => {
+export const detectProvider = (input: string): NamedNetwork | null => {
   const phone = normalizePhone(input);
   if (!phone) return null;
 
   const prefix = phone.slice(0, 3);
-  const match = (Object.keys(NETWORK_PREFIXES) as PaymentProvider[])
+  const match = (Object.keys(NETWORK_PREFIXES) as NamedNetwork[])
     .find(provider => NETWORK_PREFIXES[provider].includes(prefix));
   return match ?? null;
 };

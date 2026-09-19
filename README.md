@@ -55,7 +55,7 @@ Bidhaa 9 za mwanzo huwekwa zenyewe database ikiwa tupu (`server/src/seed/product
 
 - **Bidhaa** hutoka kwenye database. Kila bidhaa ina ukurasa wake kamili (`/bidhaa/:id`) wenye bidhaa zinazofanana.
 - **Usajili kwanza**: mgeni akitaka kuweka kitu kikapuni au kulipa, huombwa kufungua akaunti — jina kamili, namba halali ya simu ya Tanzania na password (angalau herufi 8, zikiwemo herufi na namba). Baada ya kusajiliwa, kitendo alichokuwa anafanya huendelea chenyewe.
-- **Malipo ya hatua moja**: namba ya simu ya kulipia (mtandao hutambuliwa kutoka kwenye namba) na mahali pa kupokelea mzigo. Bei hazitumwi kutoka kwenye browser; server hukokotoa kiasi kutoka kwenye database.
+- **Malipo ya hatua moja**: namba ya simu ya kulipia na mahali pa kupokelea mzigo. Mteja haulizwi mtandao kamwe: jina la mtandao ni lebo tu inayokisiwa kutoka kwenye kiambishi cha namba (namba zinaweza kuhamishwa mtandao, na viambishi kama `070` havimo kwenye orodha), na oda yenye mtandao usiojulikana hurekodiwa kama `other` — gateway ndiyo hupeleka ombi la malipo kwa namba husika. Bei hazitumwi kutoka kwenye browser; server hukokotoa kiasi kutoka kwenye database.
 - **Akaunti** (`/akaunti`): taarifa za mteja na oda zake.
 - **Admin** (`/admin`): huhitaji kuingia kwa akaunti ya msimamizi. Ulinzi halisi uko kwenye server — kila njia ya `/api/admin/*` na ya kuhariri bidhaa hukagua kuwa mtumiaji ni msimamizi. Dashibodi ina miamala, kijaribio cha webhook, na usimamizi wa bidhaa (ongeza, hariri, futa, pakia picha).
 

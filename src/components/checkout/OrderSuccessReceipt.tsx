@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { CheckCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useCheckout } from '../../context/CheckoutContext';
-import { PAYMENT_PROVIDERS } from '../../data/paymentProviders';
+import { getProviderInfo } from '../../data/paymentProviders';
 
 export const OrderSuccessReceipt: React.FC = () => {
   const { currentTransaction, closeCheckout } = useCheckout();
@@ -23,7 +23,7 @@ export const OrderSuccessReceipt: React.FC = () => {
 
   if (!currentTransaction) return null;
 
-  const provider = PAYMENT_PROVIDERS.find(p => p.id === currentTransaction.provider) || PAYMENT_PROVIDERS[0];
+  const provider = getProviderInfo(currentTransaction.provider);
   const formatTZS = (val: number) => 'TSh ' + val.toLocaleString('en-US');
 
   const handlePrint = () => {

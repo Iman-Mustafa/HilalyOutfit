@@ -35,8 +35,8 @@ export const Footer: React.FC = () => {
         <div>
           <h4 style={headingStyle}>Wasiliana Nasi</h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.85rem' }}>
-            <span>Kariakoo & Masaki, Dar es Salaam, Tanzania</span>
-            <span>+255 754 000 111 / +255 655 000 222</span>
+            <span>Morogoro, Tanzania</span>
+            <span>+255706349728</span>
             <span>support@hilalyoutfit.co.tz</span>
           </div>
         </div>

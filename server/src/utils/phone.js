@@ -2,9 +2,15 @@
 
 export const PROVIDERS = ['tigopesa', 'mpesa', 'airtel', 'halopesa'];
 
+// What an order may record. 'other' = we could not name the network from the number
+// (unlisted prefix such as 070/073/066, or a ported number). The customer is never asked:
+// the payment gateway delivers the USSD push by phone number.
+export const ORDER_PROVIDERS = [...PROVIDERS, 'other'];
+
+// A best-effort label only - Tanzania has number portability, so a prefix does not prove the network.
 const PREFIXES = {
   tigopesa: ['065', '067', '071', '077'],
-  mpesa: ['074', '075', '076'],
+  mpesa: ['074', '075', '076', '079'],
   airtel: ['068', '069', '078'],
   halopesa: ['062', '061'],
 };

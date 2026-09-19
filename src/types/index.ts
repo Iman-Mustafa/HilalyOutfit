@@ -52,7 +52,8 @@ export interface OrderItem {
   selectedColor: string;
 }
 
-export type PaymentProvider = 'tigopesa' | 'mpesa' | 'airtel' | 'halopesa';
+/** 'other': the network could not be named from the number; the gateway routes the payment by phone number */
+export type PaymentProvider = 'tigopesa' | 'mpesa' | 'airtel' | 'halopesa' | 'other';
 
 export interface PaymentProviderInfo {
   id: PaymentProvider;

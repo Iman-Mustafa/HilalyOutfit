@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useCheckout } from '../../context/CheckoutContext';
-import { PAYMENT_PROVIDERS } from '../../data/paymentProviders';
+import { getProviderInfo } from '../../data/paymentProviders';
 
 export const ProcessingStatusModal: React.FC = () => {
   const { currentTransaction, paymentProvider, paymentPhone, statusMessage, isSimulated } = useCheckout();
@@ -16,7 +16,7 @@ export const ProcessingStatusModal: React.FC = () => {
 
   if (!currentTransaction) return null;
 
-  const provider = PAYMENT_PROVIDERS.find(p => p.id === paymentProvider) || PAYMENT_PROVIDERS[0];
+  const provider = getProviderInfo(paymentProvider);
   const formatTZS = (val: number) => 'TSh ' + val.toLocaleString('en-US');
 
   return (
@@ -70,7 +70,7 @@ export const ProcessingStatusModal: React.FC = () => {
         </h3>
 
         <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', maxWidth: '360px', margin: '0.5rem auto 0' }}>
-          Tafadhali angalia simu yako yenye namba <strong style={{ color: 'var(--text-primary)' }}>{paymentPhone}</strong>. Ujumbe wa USSD kutoka <strong style={{ color: 'var(--gold-text)' }}>{provider.name}</strong> umeanza kuonekana.
+          Tafadhali angalia simu yako yenye namba <strong style={{ color: 'var(--text-primary)' }}>{paymentPhone}</strong>. Ombi la malipo kutoka <strong style={{ color: 'var(--gold-text)' }}>{provider.name}</strong> linajitokeza kwenye simu hiyo.
         </p>
       </div>
 

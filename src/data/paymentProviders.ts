@@ -43,3 +43,18 @@ export const PAYMENT_PROVIDERS: PaymentProviderInfo[] = [
     instructions: 'Ujumbe rasmi wa HaloPesa utajitokeza mara moja kuidhinisha malipo.'
   }
 ];
+
+// Shown when the network could not be named from the number (unlisted prefix or ported number)
+const GENERIC_PROVIDER: PaymentProviderInfo = {
+  id: 'other',
+  name: 'Mobile Money',
+  ussdName: '',
+  color: '#8A6914',
+  badgeBg: '#5C4610',
+  prefix: [],
+  logoText: 'Mobile Money',
+  instructions: 'Ombi la malipo litajitokeza kwenye simu yako ili uthibitishe kwa PIN yako.'
+};
+
+export const getProviderInfo = (id: string): PaymentProviderInfo =>
+  PAYMENT_PROVIDERS.find(provider => provider.id === id) ?? GENERIC_PROVIDER;

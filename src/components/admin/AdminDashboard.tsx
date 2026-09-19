@@ -21,7 +21,8 @@ const PROVIDER_NAMES: Record<PaymentProvider, string> = {
   tigopesa: 'Tigo Pesa (Mix)',
   mpesa: 'M-Pesa (Vodacom)',
   airtel: 'Airtel Money',
-  halopesa: 'HaloPesa'
+  halopesa: 'HaloPesa',
+  other: 'Mobile Money'
 };
 
 const STATUS_BADGES: Record<PaymentStatus, { label: string; tone: StatusTone }> = {

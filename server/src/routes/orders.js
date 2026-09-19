@@ -76,9 +76,12 @@ router.post('/', async (req, res) => {
   if (!rawPhone) errors.paymentPhone = 'Weka namba ya simu ya kulipia.';
   else if (!paymentPhone) errors.paymentPhone = 'Namba ya simu ya kulipia si sahihi. Mfano: 0712345678.';
 
+  // The customer only gives a number. The network is a label we work out when we can;
+  // when we cannot, the order is still accepted and the gateway routes the push by number.
   const requestedProvider = text(body.provider).toLowerCase();
-  const provider = PROVIDERS.includes(requestedProvider) ? requestedProvider : detectProvider(paymentPhone);
-  if (paymentPhone && !provider) errors.provider = 'Chagua mtandao wa malipo.';
+  const provider = PROVIDERS.includes(requestedProvider)
+    ? requestedProvider
+    : detectProvider(paymentPhone) || 'other';
 
   // --- delivery ---
   const deliveryLocation = text(body.deliveryLocation);

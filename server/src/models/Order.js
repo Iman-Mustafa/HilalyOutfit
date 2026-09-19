@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto';
 import mongoose from 'mongoose';
-import { PROVIDERS } from '../utils/phone.js';
+import { ORDER_PROVIDERS } from '../utils/phone.js';
 
 export const ORDER_STATUSES = ['pending', 'processing', 'successful', 'failed', 'cancelled'];
 /** Statuses from which a payment result may still be applied. */
@@ -36,7 +36,7 @@ const orderSchema = new mongoose.Schema(
     items: { type: [itemSchema], required: true },
     amount: { type: Number, required: true, min: 0 },
     currency: { type: String, default: 'TZS', enum: ['TZS'] },
-    provider: { type: String, required: true, enum: PROVIDERS },
+    provider: { type: String, required: true, enum: ORDER_PROVIDERS },
     paymentPhone: { type: String, required: true },
     status: { type: String, enum: ORDER_STATUSES, default: 'pending', index: true },
     gatewayRef: { type: String },

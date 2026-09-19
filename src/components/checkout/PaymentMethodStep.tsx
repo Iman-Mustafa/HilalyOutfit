@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useCheckout } from '../../context/CheckoutContext';
 import { useCart } from '../../context/CartContext';
-import { PAYMENT_PROVIDERS } from '../../data/paymentProviders';
+import { getProviderInfo } from '../../data/paymentProviders';
 import { detectProvider, normalizePhone } from '../../lib/phone';
-import type { PaymentProvider } from '../../types';
 
 export const PaymentMethodStep: React.FC = () => {
   const { user } = useAuth();
@@ -24,27 +23,21 @@ export const PaymentMethodStep: React.FC = () => {
 
   const [phoneNumber, setPhoneNumber] = useState(paymentPhone || user?.phone || '');
   const [location, setLocation] = useState(deliveryLocation);
-  const [manualProvider, setManualProvider] = useState<PaymentProvider | null>(null);
   const [formError, setFormError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const formatTZS = (val: number) => 'TSh ' + val.toLocaleString('en-US');
 
-  // The network is worked out from the number; the customer only picks one when we cannot tell
+  // The customer only gives a number. The network name is a courtesy label shown when the
+  // prefix tells us; the payment request reaches the phone either way.
   const isPhoneValid = normalizePhone(phoneNumber) !== null;
   const detectedProvider = detectProvider(phoneNumber);
-  const activeProvider = detectedProvider ?? manualProvider;
-  const activeProviderInfo = PAYMENT_PROVIDERS.find(p => p.id === activeProvider);
 
   const handlePayNow = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!isPhoneValid) {
       setFormError('Ingiza namba sahihi ya simu, mfano 0754123456.');
-      return;
-    }
-    if (!activeProvider) {
-      setFormError('Chagua mtandao wa namba hii.');
       return;
     }
     if (location.trim().length < 3) {
@@ -56,7 +49,7 @@ export const PaymentMethodStep: React.FC = () => {
     setIsLoading(true);
     await initiatePayment({
       paymentPhone: phoneNumber,
-      provider: activeProvider,
+      provider: detectedProvider ?? undefined,
       deliveryLocation: location.trim()
     });
     setIsLoading(false);
@@ -96,9 +89,9 @@ export const PaymentMethodStep: React.FC = () => {
       <div className="form-group" style={{ margin: 0 }}>
         <label className="form-label" htmlFor="payment-phone">
           <span>Namba ya Simu ya Kulipia</span>
-          {isPhoneValid && activeProviderInfo && (
+          {isPhoneValid && detectedProvider && (
             <span style={{ fontSize: '0.78rem', color: 'var(--gold-text)', fontWeight: 600 }}>
-              {activeProviderInfo.name}
+              {getProviderInfo(detectedProvider).name}
             </span>
           )}
         </label>
@@ -121,41 +114,6 @@ export const PaymentMethodStep: React.FC = () => {
           Utapokea ombi la malipo kwenye simu hii, kisha utaingiza PIN yako kuthibitisha.
         </div>
       </div>
-
-      {/* Network picker — only when the number's prefix is one we do not recognise */}
-      {isPhoneValid && !detectedProvider && (
-        <div>
-          <label className="form-label" style={{ marginBottom: '0.5rem' }}>
-            <span>Hatujatambua mtandao wa namba hii. Chagua mtandao:</span>
-          </label>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {PAYMENT_PROVIDERS.map(provider => {
-              const isSelected = manualProvider === provider.id;
-              return (
-                <button
-                  key={provider.id}
-                  type="button"
-                  onClick={() => setManualProvider(provider.id)}
-                  aria-pressed={isSelected}
-                  style={{
-                    padding: '0.5rem 0.9rem',
-                    borderRadius: 'var(--radius-full)',
-                    border: isSelected ? '1px solid var(--gold-primary)' : '1px solid var(--border-subtle)',
-                    background: isSelected ? 'var(--gold-tint)' : 'var(--bg-surface)',
-                    color: isSelected ? 'var(--gold-text)' : 'var(--text-secondary)',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '0.84rem',
-                    fontWeight: 600,
-                    cursor: 'pointer'
-                  }}
-                >
-                  {provider.logoText}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Delivery Location */}
       <div className="form-group" style={{ margin: 0 }}>
