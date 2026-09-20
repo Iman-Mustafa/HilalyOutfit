@@ -81,9 +81,6 @@ export const Footer: React.FC = () => {
         <div>
           &copy; 2026 <strong>Hilaly Outfit</strong>. Haki zote zimehifadhiwa.
         </div>
-        <div>
-          Imetengenezwa kwa umakini na <strong style={{ color: 'var(--gold-text)' }}>Iman Coder</strong>
-        </div>
       </div>
     </footer>
   );
